@@ -1,0 +1,48 @@
+.register_section {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-image: url('/public/Images/cover1.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.register_main {
+    border: 1px solid black;
+    height: 100vh;
+}
+.register_div {
+    border: 1px solid white;
+    border-radius: 15px;
+    width: 50%;
+    margin: 5% auto;
+    text-align: center;
+    padding: 20px 20px;
+    background: rgba(0, 0, 0, 0.2); 
+}
+.register_heading {
+    color: white;
+    letter-spacing: 2px;
+    font-size: 30px;
+}
+.register_form {
+    width: 90%;
+    padding: 5px;
+}
+.register_button {
+    width: 100px;
+}
+@media (max-width:576px) {
+    .register_div {
+        border: 1px solid white;
+        border-radius: 15px;
+        width: 90%;
+        margin: 20% auto;
+        text-align: center;
+        padding: 20px 20px;
+    }
+
+    .register_form {
+        width: 100%;
+        padding: 0px;
+    }
+}
