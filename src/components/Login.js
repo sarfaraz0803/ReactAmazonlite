@@ -33,11 +33,24 @@ const Login = () => {
                     navigate('/account')
                 }
             })
+            .catch(err=>alert(err))
+        }else if(loginDetail.userRole === 'buyer'){
+            Service.buyerLogin(loginData)
+            .then(res=>{
+                if(res.data === 'Email Not Exist'){
+                    alert('Email Not Exist')
+                }else if(res.data === 'Wrong Password'){
+                    alert('Wrong Password')
+                }else{
+                    localStorage.setItem('BuyerCredentials',JSON.stringify({email:loginData.email,password:loginData.password,token:res.data.token}))
+                    localStorage.setItem('loggedUser',JSON.stringify({flag:true,role:'buyer'}))
+                    navigate('/productpage')
+                }
+            })
             .catch(err=>console.log(err))
-        }        
-        else{
+        }else{
             console.log(loginData)
-            navigate('/profile')
+            navigate('/')
         }
    }
 

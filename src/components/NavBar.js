@@ -27,8 +27,21 @@ const NavBar = (props) => {
                 }
             })
             .catch(err=>console.log(err))
+        }else if(loggedUser !== null && loggedUser.role === 'buyer'){
+            Service.buyerLogout()
+            .then(res=>{
+                if(res.data === 'Successfully LoggedOut'){
+                    localStorage.removeItem('loggedUser')
+                    localStorage.removeItem('BuyerCredentials')
+                    alert('Successfully LoggedOut')
+                    navigate('/')
+                }else{
+                    console.log(res)
+                }
+            })
+            .catch(err=>console.log(err))
         }else{
-            alert('Your are in else part')
+            alert('Your are not a buyer nor a seller who you are')
         }
     }
     
@@ -40,15 +53,16 @@ const NavBar = (props) => {
                 {
                     login.flag !== false && login.role === 'buyer'?
                     <ul className='nav_list'>
-                        <li><NavLink className="nav-link" to="/">Home</NavLink></li>
+                        <li><NavLink className="nav-link" to="/productpage">Home</NavLink></li>
                         <li><NavLink className="nav-link" to="/profile">Profile</NavLink></li>
-                        <li><NavLink className="nav-link" to="/" onClick={logout}>Logout</NavLink></li>
+                        <li><button onClick={logout}>Logout</button></li>
                         <li><NavLink className="nav-link cart" to="/cart"><ShoppingCartIcon/></NavLink></li>                    
                     </ul>
                     : login.flag !== false && login.role === "seller"?
                     <ul className='nav_list'>
-                        <li><NavLink className="nav-link" to="/">Home</NavLink></li>
-                        <li><button onClick={logout}>Logout</button></li>              
+                        <li><NavLink className="nav-link" to="/productpage">Home</NavLink></li>
+                        <li><NavLink className="nav-link" to="/account">Profile</NavLink></li>
+                        <li><button onClick={logout}>Logout</button></li>             
                     </ul>
                     : 
                     <ul className='nav_list'>

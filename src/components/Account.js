@@ -1,27 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import '../style/Account.css'
-import {NavLink} from 'react-router-dom'
 import { Modal, Form, Button } from 'react-bootstrap'
 import NavBar from './NavBar'
 import Service from './Service'
 
 const Account = () => {
     const [updateAccModal, setUpdateAccModal] = useState(false)   // Update Seller Account Modal Handler
+    const [addProModal, setAddProModal] = useState(false)   // Add Product Modal Handler
     const [deleteProductModal, setDeleteProductModal] = useState(false) // Delete Product Modal Handler
     const [selAcc, setSelAcc] = useState({id:"",email:"",password:"",name:"",city:"",district:"",state:"",pinCode:"",mobile:""})
+    const [addProduct, setAddProduct] = useState({name:"",price:"",category:"",description:""})
+    const [proImage,setProImage] = useState([])
     const [delPro,setDelPro] = useState({proName:""})
     const [selPros, setSelPros] = useState([])
     
 
     useEffect(()=>{
         function defaults(){
-            const store = JSON.parse(localStorage.getItem('SellerCredentials'))
+            const store = JSON.parse(localStorage.getItem('SellerCredentials')) // for storing password from frontend
             Service.loggedSeller()
             .then(res=>{
                 if(res.data === 'Email Not Exist'){
                     alert('Email Not Exist')
                 }else{
-                    setSelAcc((preValue)=>{return {...preValue,email:res.data.email,password:store.password,name:res.data.name,city:res.data.city,district:res.data.district,
+                    setSelAcc((preValue)=>{return {...preValue,id:res.data._id,email:res.data.email,password:store.password,name:res.data.name,city:res.data.city,district:res.data.district,
                         state:res.data.state,pinCode:res.data.pinCode,mobile:res.data.mobile}})
                 }
             })
@@ -45,9 +47,18 @@ const Account = () => {
         setSelAcc((preValue)=>{return {...preValue, [name]:value}})
     }
 
+    function addProInputHandler(e){
+        const {name,value} = e.target
+        setAddProduct((preValue)=>{return {...preValue,[name]:value}})
+    }
+
     function delProInputHandler(e){
         const {name,value} = e.target
         setDelPro((preValue)=>{return {...preValue,[name]:value}})
+    }
+
+    function proImageHandler(e){
+        setProImage(e.target.files[0])
     }
 
     function updateSubmitHandler(e){
@@ -65,7 +76,31 @@ const Account = () => {
         .catch(err=>console.log(err))
     }
 
-    function deleteProductForm(e){
+    function addProSubmitHandler(e){
+        e.preventDefault()        
+        const sellerProduct = {name:addProduct.name,price:addProduct.price,categroy:addProduct.category,description:addProduct.description}
+        let formData = new FormData()
+        formData.append("Image",proImage)
+        formData.append("name",sellerProduct.name)
+        formData.append("price",sellerProduct.price)
+        formData.append("category",sellerProduct.category)
+        formData.append("description",sellerProduct.description)
+        Service.addProductSeller(formData)
+        .then(res=>{
+            if(res.data === 'Successfully Added'){
+                alert('Successfully Added')
+                window.location.assign('/account')
+            }else if(res.data === 'Product exist'){
+                alert('Product exist')
+            }else{
+                console.log(res.data)
+            }
+        })
+        .catch(err=>console.log(err))
+        setAddProModal(false)
+    }
+
+    function deleteSubmitHandler(e){
         e.preventDefault()
         Service.deleteProduct(delPro.proName)
         .then(res=>{
@@ -78,6 +113,19 @@ const Account = () => {
             }else{
                 console.log(res.data)
                 setDeleteProductModal(false)
+            }
+        })
+        .catch(err=>console.log(err))
+    }
+
+    function delProOnClick(proName){
+        Service.deleteProduct(proName)
+        .then(res=>{
+            if(res.data === 'Deleted'){
+                alert('Product Deleted')
+                window.location.assign('/account')
+            }else{
+                console.log(res.data)
             }
         })
         .catch(err=>console.log(err))
@@ -141,6 +189,43 @@ const Account = () => {
             
         </Modal>
 
+
+        {/*----------Add_Product_Modal------------- */}
+
+        <Modal show={addProModal} size='lg' onHide={()=>{setAddProModal(false)}} backdrop="static" keyboard={false} >
+            <Modal.Header closeButton>
+            <Modal.Title>Add Product</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {/*Form*/}  
+                <Form onSubmit={addProSubmitHandler} method='POST' encType='multipart/form-data'>
+                    <Form.Group className="mb-3" controlId="name">
+                        <Form.Label>Product Name</Form.Label>
+                        <Form.Control type="text" placeholder="Enter Product Name" name='name' onChange={addProInputHandler} value={addProduct.name} required />                    
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="price">
+                        <Form.Label>Product Price</Form.Label>
+                        <Form.Control type="number" placeholder="Enter Product Price" name='price' onChange={addProInputHandler} value={addProduct.price} required />                    
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="category">
+                        <Form.Label>Product Category</Form.Label>
+                        <Form.Control type="text" placeholder="Enter Product Category" name='category' onChange={addProInputHandler} value={addProduct.category} required />                    
+                    </Form.Group>                    
+                    <Form.Group className="mb-3" controlId="description">
+                        <Form.Label>Product Description</Form.Label>
+                        <Form.Control as="textarea" rows={3} placeholder='Enter Description Here' name='description' onChange={addProInputHandler} value={addProduct.description} required />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="image">
+                        <Form.Label>Upload Image</Form.Label>
+                        <Form.Control type="file" name='image' onChange={proImageHandler} required />                    
+                    </Form.Group>
+                    
+                    <Button className='mx-2' variant="primary" type="submit">Submit</Button>
+                    <Button className='mx-2' variant="secondary" onClick={()=>{setAddProModal(false)}}>Close</Button>
+                </Form>
+            </Modal.Body>
+        </Modal>
+
         {/*----------Delete_Product_Modal------------- */}
 
         <Modal show={deleteProductModal} onHide={()=>{setDeleteProductModal(false)}} backdrop="static" keyboard={false} >
@@ -149,7 +234,7 @@ const Account = () => {
             </Modal.Header>
             <Modal.Body>
                 {/*Form*/}
-                <Form onSubmit={deleteProductForm} method='POST'>
+                <Form onSubmit={deleteSubmitHandler} method='POST'>
                     <Form.Group className="mb-3" controlId="proName">
                         <Form.Label>Product Name</Form.Label>
                         <Form.Control type="text" placeholder="Enter Product Name" name='proName' onChange={delProInputHandler} value={delPro.proName} />                    
@@ -163,7 +248,7 @@ const Account = () => {
 
 
 
-
+        {/*----------------------------------REACT_JSX----------------------------------*/}
 
         <section className='whole_section'>
 
@@ -190,7 +275,7 @@ const Account = () => {
                             <h3>{selAcc.name}</h3>
                         </div>
                         <div className="card-body row_first_card">
-                            <button className='btn btn-success'>Add Product</button>
+                            <button className='btn btn-success' onClick={()=>{setAddProModal(true)}}>Add Product</button>
                             <button className='btn btn-danger' onClick={()=>{setDeleteProductModal(true)}}>Delete Product</button>
                         </div>
                         </div>
@@ -233,11 +318,11 @@ const Account = () => {
                                     return(
                                         <div className="sel_cards" key={ind}>
                                             <div className="sel_card">
-                                                <img src="https://picsum.photos/seed/picsum/200/300" alt="mypic" className="sel_card_img"/>
+                                                <img src={val.image} alt="mypic" className="sel_card_img"/>
                                                 <div className="sel_card_info">
                                                     <h4 className="sel_card_title">Name : {val.name}</h4>
                                                     <h5 className="sel_card_price">Price : {val.price}</h5>                                                    
-                                                    <button onClick={()=>console.log(val.name)}>Delete</button>
+                                                    <button onClick={()=>{delProOnClick(val.name)}}>Delete</button>
                                                 </div>
                                             </div>
                                         </div>

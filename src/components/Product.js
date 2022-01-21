@@ -6,29 +6,29 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export default function Product() {
+export default function Product(props) {
   return (
     
         <Card sx={{ maxWidth: 345, height:480 }}>
             <CardMedia
             component="img"
             height="200"
-            image="https://picsum.photos/seed/picsum/200/300"
+            width="300"
+            image={props.image}
             alt="green iguana"
             />
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    Lizard
+                <Typography gutterBottom variant="h5" component="div" style={{width:"100%", textAlign:"center", textTransform:"capitalize"}}>
+                    {props.name}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000
-                    species, ranging across all continents except Antarctica
+                <Typography variant="body2" color="text.secondary" style={{height:"150px", padding:"1px", textAlign:"justify"}}>
+                    {props.description}
                 </Typography>
             </CardContent>
-            <CardActions className='mt-3'>
+            <CardActions >
                 <div className='card_button mx-auto'>
-                    <Button size="small" className='border border-success mx-1'>Add To Cart</Button>
-                    <Button size="small" className='border border-success mx-1'>Price</Button>
+                    <Button size="small" className='border border-success mx-1' onClick={props.doCart}>Add To Cart</Button>
+                    <Button size="small" className='border border-success mx-1'>Price : {props.price}</Button>
                 </div>
             </CardActions>
         </Card>

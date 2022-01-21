@@ -48,17 +48,37 @@
 
 }
 .checkout_footer {
-    /* border: 1px solid darkorange; */
+    /* border: 1px solid black; */
     margin: 2px 0px;
     padding: 25px 0px;
 }
 .checkout_buttons{
-    /* border: 1px solid rgb(208, 193, 186); */
+    border: 1px solid rgb(171, 154, 154);
     padding: 10px 20px;
 }
 .checkout_buttons form{
     /* border: 1px solid darkorange; */
     width: 50%;
     margin: 0px auto;
+}
+.checkout_buttons form h5{
+    border: 1px solid rgb(197, 197, 199);
+    margin: auto 2px auto 5px;
+    width: 70%;
+    font-size: 25px;
+    color: rgb(23, 17, 17);
+    background-color: white;
+    padding: 4px 5px;
+    border-radius: 3px;
+}
+@media (max-width:768px){
+    .checkout_buttons{
+        border: 1px solid red;
+    }
+    .checkout_buttons form {
+        border: 1px solid darkorange;
+        width: 100%;
+        margin: 0px auto;
+    }
 }
 
