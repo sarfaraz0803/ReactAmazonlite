@@ -5,26 +5,33 @@ import Service from './Service'
 
 const Cart = () => {
     const [buyerCart,setBuyerCart] = useState({cartTotal:0.0, productList:[]})
+    
 
     useEffect(()=>{        
-        Service.getBuyerCart()
-        .then(res=>{
-            setBuyerCart((preValue)=>{return{ ...preValue,cartTotal:res.data.cartTotal,productList:res.data.productList}})
-            localStorage.setItem('cartTotal',JSON.stringify(res.data.cartTotal))
-        })
-        .catch(err=>console.log(err))
+        function getCartDefaults(){
+            Service.getBuyerCart()
+            .then(res=>{
+                setBuyerCart((preValue)=>{return{ ...preValue,cartTotal:res.data.cartTotal,productList:res.data.productList}})
+                //localStorage.setItem('cartTotal',JSON.stringify(res.data.cartTotal))
+            })
+            .catch(err=>console.log(err))
+        }
+        getCartDefaults()
     },[])
-    
-    
-    
-
     
 
     // Function for Buyer Checkout
     function checkOut(e){
         e.preventDefault()
         Service.buyerCheckout()
-        .then(res=>console.log(res.data))
+        .then(res=>{
+            if(res.data === "Your Order Successfully Placed"){
+                alert('Your Order Successfully Placed')
+                window.location.assign('/cart')
+            }else{
+                console.log(res.data);
+            }
+        })
         .catch(err=>console.log(err))
     }
 
@@ -51,40 +58,43 @@ const Cart = () => {
             </div>
             <div className='checkout_list'>
                 <div className='pro_list'>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Category</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            {
-                                buyerCart.productList.map((val,ind)=>{
-                                    return(
-                                        <tr className='pro_row' key={ind}>
-                                            <th scope="row">{ind+1}</th>
-                                            <td>
-                                                <div className='pro_image'>
-                                                    <img src="https://picsum.photos/seed/picsum/200/300" alt="productImage" />
-                                                </div>
-                                            </td>
-                                            <td>{val.name}</td>
-                                            <td>{val.category}</td>
-                                            <td>{val.price}</td>
-                                            <td><button className='btn btn-danger' onClick={()=>removeFromCart(val.name ,val.sellerEmail)}>Remove</button></td>
-                                        </tr>
-                                    )
-                                })
-                            }
-
-                        </tbody>
-                    </table>
+                    {
+                        buyerCart.productList.length === 0?
+                        <div className='empty_cart'><h2>Your Cart is Empty</h2></div>
+                        :
+                        <table className="table table-hover">
+                         <thead>
+                             <tr>
+                             <th scope="col">#</th>
+                             <th scope="col">Image</th>
+                             <th scope="col">Name</th>
+                             <th scope="col">Category</th>
+                             <th scope="col">Price</th>
+                             <th scope="col">Action</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                             {  
+                                 buyerCart.productList.map((val,ind)=>{
+                                     return(
+                                         <tr className='pro_row' key={ind}>
+                                             <th scope="row">{ind+1}</th>
+                                             <td>
+                                                 <div className='pro_image'>
+                                                     <img src="https:picsum.photos/seed/picsum/200/300" alt="productImage" />
+                                                 </div>
+                                             </td>
+                                             <td className='pro_name'>{val.name}</td>
+                                             <td className='pro_category'>{val.category}</td>
+                                             <td>{val.price}</td>
+                                             <td><button className='btn btn-danger' onClick={()=>removeFromCart(val.name ,val.sellerEmail)}>Remove</button></td>
+                                         </tr>
+                                     )
+                                 })                                
+                             }
+                         </tbody>
+                        </table>
+                    }
                 </div>
             </div>
             <div className='checkout_footer'>
@@ -101,3 +111,6 @@ const Cart = () => {
 }
 
 export default Cart
+
+
+ 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import '../style/NavBar.css'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Service from './Service';
 
 const NavBar = (props) => {
-    const navigate = useNavigate()
+    
     const [login, setLogin] = useState({flag:true, role:""}) 
 
     useEffect(()=>{
@@ -21,7 +21,7 @@ const NavBar = (props) => {
                     localStorage.removeItem('loggedUser')
                     localStorage.removeItem('SellerCredentials')
                     alert('Successfully LoggedOut')
-                    navigate('/')
+                    window.location.assign('/')
                 }else{
                     console.log(res)
                 }
@@ -34,7 +34,7 @@ const NavBar = (props) => {
                     localStorage.removeItem('loggedUser')
                     localStorage.removeItem('BuyerCredentials')
                     alert('Successfully LoggedOut')
-                    navigate('/')
+                    window.location.assign('/')
                 }else{
                     console.log(res)
                 }

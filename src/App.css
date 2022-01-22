@@ -1,8 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif&family=Roboto+Slab&display=swap');
 * {
     padding: 0;
     margin: 0;
     text-decoration: none;
     box-sizing: border-box;
+    font-family: 'PT Serif',
+    serif;
+    font-family: 'Roboto Slab',
+    serif;
 }
 .nav-link{
     /* margin-left: -25px; */

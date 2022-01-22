@@ -34,7 +34,7 @@ const Homepage = () => {
             <section className='seller_section' id='home_pros'>
                 <div className='seller_div'>
                     <div className='seller_heading'>
-                        <h4>Trending Products</h4>
+                        <h4>Our Best Products</h4>
                     </div>
                     <div className='seller_products'> 
                         <Cards />

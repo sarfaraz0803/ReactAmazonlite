@@ -21,20 +21,36 @@ const Register = () => {
             alert('Please Fill All fields')
         }else if(registerDetail.password !== registerDetail.cnfrmpass){
             alert('Password not matching')
-        }else{
+        }else if(registerDetail.role === 'seller'){
             Service.sellerRegister(registerData)
             .then(res=>{
                 if(res.data === 'Email Already Exist'){
                     alert('Email Already Exist')
                 }else if(res.data === 'Successfully Registered'){
-                    alert('Successfully Registered')
-                    navigate('/login')
                     setRegisterDetail((preValue)=>{return {...preValue,email:"",password:"",cnfrmpass:"",name:"",mobile:"",role:""}})
+                    alert('Successfully Registered')
+                    navigate('/login')                    
                 }else{
                     console.log(res)
                 }
             })
             .catch(err=>console.log(err))
+        }else if(registerDetail.role === 'buyer'){
+            Service.registerBuyer(registerData)
+            .then(res=>{
+                if(res.data === 'Successfully Registered'){
+                    setRegisterDetail((preValue)=>{return {...preValue,email:"",password:"",cnfrmpass:"",name:"",mobile:"",role:""}})
+                    alert('Successfully Registered')
+                    navigate('/login')
+                }else if(res.data === 'This email already registered'){
+                    alert('This email already registered')
+                }else{
+                    console.log(res.data);
+                }
+            })
+            .catch(err=>console.log(err))
+        }else{
+            alert('who you are')
         }
    }
 

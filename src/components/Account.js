@@ -40,6 +40,7 @@ const Account = () => {
             .catch(err=>console.log(err))
         }
         defaults()
+        
     },[])
 
     function updateInputHandler(e){
@@ -272,7 +273,7 @@ const Account = () => {
                         <div className="card shadow-sm" style={{height:"100%"}}>
                         <div className="card-header bg-transparent text-center">
                             <img className="profile_img" src="https://source.unsplash.com/600x300/?student" alt="student dp" />
-                            <h3>{selAcc.name}</h3>
+                            <h3 className='text-capitalize'>{selAcc.name}</h3>
                         </div>
                         <div className="card-body row_first_card">
                             <button className='btn btn-success' onClick={()=>{setAddProModal(true)}}>Add Product</button>
@@ -288,12 +289,12 @@ const Account = () => {
                         <div className="card-body pt-0">
                             <table className="table table-bordered">
                                 <tbody>
-                                <tr><th width="30%">Name</th><td width="2%">:</td><td>{selAcc.name}</td></tr>
+                                <tr><th width="30%">Name</th><td width="2%">:</td><td className='text-capitalize'>{selAcc.name}</td></tr>
                                 <tr><th width="30%">Email</th><td width="2%">:</td><td>{selAcc.email}</td></tr>
                                 <tr><th width="30%">Mobile</th><td width="2%">:</td><td>{selAcc.mobile}</td></tr>
-                                <tr><th width="30%">City</th><td width="2%">:</td><td>{selAcc.city}</td></tr>
-                                <tr><th width="30%">District</th><td width="2%">:</td><td>{selAcc.district}</td></tr>
-                                <tr><th width="30%">State</th><td width="2%">:</td><td>{selAcc.state}</td></tr>
+                                <tr><th width="30%">City</th><td width="2%">:</td><td className='text-capitalize'>{selAcc.city}</td></tr>
+                                <tr><th width="30%">District</th><td width="2%">:</td><td className='text-capitalize'>{selAcc.district}</td></tr>
+                                <tr><th width="30%">State</th><td width="2%">:</td><td className='text-capitalize'>{selAcc.state}</td></tr>
                                 <tr><th width="30%">PinCode</th><td width="2%">:</td><td>{selAcc.pinCode}</td></tr>
                                 </tbody>
                             </table>
@@ -314,20 +315,26 @@ const Account = () => {
                         <div className="card-body pt-0">
 
                             {
+                                selPros.length === 0 ?<div className='empty_store'><h2>Your Store is Empty</h2></div>
+                                :
+                                <React.Fragment>
+                                {
                                 selPros.map((val,ind)=>{
-                                    return(
-                                        <div className="sel_cards" key={ind}>
-                                            <div className="sel_card">
-                                                <img src={val.image} alt="mypic" className="sel_card_img"/>
-                                                <div className="sel_card_info">
-                                                    <h4 className="sel_card_title">Name : {val.name}</h4>
-                                                    <h5 className="sel_card_price">Price : {val.price}</h5>                                                    
-                                                    <button onClick={()=>{delProOnClick(val.name)}}>Delete</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                })
+                                     return(
+                                         <div className="sel_cards" key={ind}>
+                                             <div className="sel_card">
+                                                 <img src={val.image} alt="mypic" className="sel_card_img"/>
+                                                 <div className="sel_card_info">
+                                                     <h4 className="sel_card_title text-capitalize">{val.name}</h4>
+                                                     <h5 className="sel_card_price">Price : {val.price}</h5>                                                    
+                                                     <button onClick={()=>{delProOnClick(val.name)}}>Delete</button>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     )
+                                 })
+                                }
+                                </React.Fragment>
                             }
                             
                         </div>
@@ -346,3 +353,5 @@ const Account = () => {
 }
 
 export default Account
+
+

@@ -31,9 +31,11 @@
 }
 .product_card{
     height: 500px;
-    width: 300px;
+    width: 340px;
     margin: 5px 3px;
     float: left;
+    padding: 1px;
+    /* border: 1px solid rgb(187, 184, 184); */
 }
 @media (max-width:576px){
     .searchbar_div form {
@@ -51,3 +53,4 @@
         scroll-behavior: smooth;
     }
 }
+

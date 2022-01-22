@@ -63,6 +63,10 @@ class Service{
 
     // ============================BUYER_APIS==============================
 
+    registerBuyer(buyerData){
+        return axios.post(BUYER_API_URL+'/register',buyerData)
+    }
+
     buyerLogin(login){
         return axios.post(BUYER_API_URL+'/login',login)
     }
@@ -71,12 +75,6 @@ class Service{
         const store = JSON.parse(localStorage.getItem('BuyerCredentials'))
         const authAxios = axios.create({baseURL:BUYER_API_URL,headers:{Email:`${store.email}`,Authorization:`${store.token}`}})
         return authAxios.get('/loggedBuyer')
-    }
-
-    getBuyerCart(){
-        const store = JSON.parse(localStorage.getItem('BuyerCredentials'))
-        const authAxios = axios.create({baseURL:BUYER_API_URL,headers:{Email:`${store.email}`,Authorization:`${store.token}`}})
-        return authAxios.get('/cart')
     }
 
     buyerLogout(){
@@ -89,6 +87,12 @@ class Service{
         const store = JSON.parse(localStorage.getItem('BuyerCredentials'))
         const authAxios = axios.create({baseURL:BUYER_API_URL,headers:{Email:`${store.email}`,Authorization:`${store.token}`}})
         return authAxios.put('/update',updateData)
+    }
+
+    getBuyerCart(){
+        const store = JSON.parse(localStorage.getItem('BuyerCredentials'))
+        const authAxios = axios.create({baseURL:BUYER_API_URL,headers:{Email:`${store.email}`,Authorization:`${store.token}`}})
+        return authAxios.get('/cart')
     }
 
     buyerCheckout(){

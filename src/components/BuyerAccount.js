@@ -4,7 +4,7 @@ import '../style/BuyerAccount.css'
 import NavBar from './NavBar'
 import Service from './Service'
 
-const BuyerAccount = () => {
+const BuyerAccount = () => { 
     const [updateAccModal, setUpdateAccModal] = useState(false)   // Update Buyer Account Modal Handler
     const [buyAcc,setBuyAcc] = useState({id:"",email:"",password:"",name:"",city:"",district:"",state:"",pinCode:"",mobile:""})
 
@@ -21,7 +21,7 @@ const BuyerAccount = () => {
                 }
             })
             .catch(err=>console.log(err))
-        }
+        }        
         defaults()
     },[])
 
@@ -112,8 +112,7 @@ const BuyerAccount = () => {
                         <h1>Your Profile</h1>
                     </div>
                 </div>
-            </header>
-        
+            </header>        
 
             <section className='profile_section'>
             <div className="rt-container">
@@ -127,7 +126,7 @@ const BuyerAccount = () => {
                         <div className="card shadow-sm" style={{height:"100%"}}>
                         <div className="card-header bg-transparent text-center">
                             <img className="profile_img" src="https://source.unsplash.com/600x300/?student" alt="student dp" />
-                            <h3>{buyAcc.name}</h3>
+                            <h3 className='text-capitalize'>{buyAcc.name}</h3>
                         </div>
                         <div className="card-body row_first_card">
                             <button className='btn btn-success' onClick={()=>{setUpdateAccModal(true)}}>Update Account</button>
@@ -142,11 +141,11 @@ const BuyerAccount = () => {
                         <div className="card-body pt-0">
                             <table className="table table-bordered">
                                 <tbody>
-                                <tr><th width="30%">Name</th><td width="2%">:</td><td>{buyAcc.name}</td></tr>
+                                <tr><th width="30%">Name</th><td width="2%">:</td><td className='text-capitalize'>{buyAcc.name}</td></tr>
                                 <tr><th width="30%">Email</th><td width="2%">:</td><td>{buyAcc.email}</td></tr>
-                                <tr><th width="30%">City</th><td width="2%">:</td><td>{buyAcc.city}</td></tr>
-                                <tr><th width="30%">District</th><td width="2%">:</td><td>{buyAcc.district}</td></tr>
-                                <tr><th width="30%">State</th><td width="2%">:</td><td>{buyAcc.state}</td></tr>
+                                <tr><th width="30%">City</th><td width="2%">:</td><td className='text-capitalize'>{buyAcc.city}</td></tr>
+                                <tr><th width="30%">District</th><td width="2%">:</td><td className='text-capitalize'>{buyAcc.district}</td></tr>
+                                <tr><th width="30%">State</th><td width="2%">:</td><td className='text-capitalize'>{buyAcc.state}</td></tr>
                                 <tr><th width="30%">Pincode</th><td width="2%">:</td><td>{buyAcc.pinCode}</td></tr>
                                 <tr><th width="30%">Mobile</th><td width="2%">:</td><td>{buyAcc.mobile}</td></tr>
                                 </tbody>
